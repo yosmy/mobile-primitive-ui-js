@@ -1,23 +1,71 @@
-import React from 'react';
+import React from "react";
 import BaseModal from "react-native-modal";
-import {ModalProps} from '@yosmy/ui-spec'
+import {Modal as Spec, Container as ContainerSpec} from "@yosmy/primitive-ui-spec"
+import {styled} from "@yosmy/style";
 
-const Modal = (props) => {
+const Modal = ({
+    full, backdrop, animation, onClose,
+    style, children, ...props
+}) => {
+    delete props.flow;
+    delete props.align;
+    delete props.flex;
+    delete props.margin;
+    delete props.padding;
+    delete props.border;
+    delete props.width;
+    delete props.height;
+    delete props.background;
+    delete props.z;
+    delete props.position;
+    delete props.shadow;
+
     return <BaseModal
         isVisible={true}
-        coverScreen={typeof props.full !== 'undefined' ? props.full : true}
-        onBackdropPress={props.onClose}
-        onBackButtonPress={props.onClose}
-        animationIn={props.animation && props.animation.in}
-        animationOut={props.animation && props.animation.out}
-        backdropOpacity={props.backdrop && props.backdrop.opacity}
-        backdropColor={props.backdrop && props.backdrop.color}
-        style={props.style}
+        coverScreen={full}
+        onBackdropPress={onClose}
+        onBackButtonPress={onClose}
+        animationIn={animation && animation.in}
+        animationOut={animation && animation.out}
+        backdropOpacity={backdrop && backdrop.opacity}
+        backdropColor={backdrop && backdrop.color}
+        style={style}
     >
-        {props.children}
+        {children}
     </BaseModal>;
 };
 
-Modal.propTypes = ModalProps;
+Modal.propTypes = Spec.Props;
 
-export default Modal;
+Modal.defaultProps = {
+    backdrop: {
+        opacity: 0.5,
+        color: "#000000"
+    }
+}
+
+const StyledModal = styled(Modal)`
+    ${props => ContainerSpec.compileFlow(props.flow)}
+    ${props => ContainerSpec.compileAlign(props.align)}
+    ${props => ContainerSpec.compileFlex(props.flex)}
+    
+    ${props => ContainerSpec.compileWidth(props.width)}
+    ${props => ContainerSpec.compileHeight(props.height)}
+    
+    ${props => ContainerSpec.compileBackground(props.background)}
+
+    ${props => ContainerSpec.compileMargin(props.margin)}
+    ${props => ContainerSpec.compilePadding(props.padding)}
+
+    ${props => ContainerSpec.compileBorderWidth(props.border)}
+    ${props => ContainerSpec.compileBorderStyle(props.border)}
+    ${props => ContainerSpec.compileBorderColor(props.border)}
+    ${props => ContainerSpec.compileBorderRadius(props.border)}
+    
+    ${props => ContainerSpec.compileZ(props.z)}
+    ${props => ContainerSpec.compilePosition(props.position)}
+    ${props => ContainerSpec.compileShadow(props.shadow)}
+`;
+
+
+export default StyledModal;

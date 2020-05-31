@@ -1,134 +1,53 @@
-import React from 'react';
+import React from "react";
 import {Text as BaseText} from "react-native";
-import {TextProps, prepareFlexChildStyle, prepareMarginStyle} from '@yosmy/ui-spec'
-import {withTheme} from 'react-native-elements';
+import {styled} from "@yosmy/style";
+import {Text as Spec, Container as ContainerSpec} from "@yosmy/primitive-ui-spec"
 
-const Text = (props) => {
-    const style = buildStyle(
-        props.theme,
-        props.variant,
-        props.color,
-        props.center,
-        props.margin,
-        props.wrap,
-        props.style
-    );
+const Text = ({
+    style, children, ...props
+}) => {
+    delete props.flex;
+    delete props.margin;
+    delete props.padding;
+    delete props.border;
+    delete props.width;
+    delete props.background;
+    delete props.wrap;
+    delete props.color;
+    delete props.size;
 
     return <BaseText
         style={style}
-        {...props}
-    />;
+        {...props} // key
+    >
+        {children}
+    </BaseText>;
 };
 
-Text.propTypes = TextProps;
+Text.propTypes = Spec.Props;
 
-const buildStyle = (theme, variant, color, center, margin, wrap, style) => {
-    let variantStyle = {};
-    switch (variant) {
-        case 'h1':
-            variantStyle = {
-                fontSize: 48,
-            };
+// If the rounded border is not visible, try applying overflow: "hidden" as well.
+// https://reactnative.dev/docs/view-style-props#borderradius
+// https://github.com/facebook/react-native/issues/10807#issuecomment-274291147
 
-            break;
-        case 'h2':
-            variantStyle = {
-                fontSize: 30,
-            };
+const StyledText = styled(Text)`
+    ${props => Spec.compileTextAlign(props.align)}
+    ${props => ContainerSpec.compileAlign(props.align)}
+    ${props => ContainerSpec.compileMargin(props.margin)}
+    ${props => ContainerSpec.compilePadding(props.padding)}
+    ${props => ContainerSpec.compileWidth(props.width)}
+    
+    ${props => ContainerSpec.compileBorderWidth(props.border)}
+    ${props => ContainerSpec.compileBorderStyle(props.border)}
+    ${props => ContainerSpec.compileBorderColor(props.border)}
 
-            break;
-        case 'title':
-            variantStyle = {
-                fontSize: 16,
-            };
+    ${props => ContainerSpec.compileBorderRadius(props.border)}
+    ${props => props.border && props.border.radius && `overflow: hidden`}
 
-            break;
-        case 'menu':
-            variantStyle = {
-                fontSize: 18,
-                // fontWeight: 'bold'
-            };
+    ${props => ContainerSpec.compileBackground(props.background)}
+    ${props => Spec.compileWrap(props.wrap)}
+    ${props => Spec.compileColor(props.color)}
+    ${props => Spec.compileSize(props.size)}
+`;
 
-            break;
-        case 'bold':
-            variantStyle = {
-                fontWeight: 'bold'
-            };
-
-            break;
-        case 'caption':
-            variantStyle = {
-                fontSize: 12,
-                lineHeight: 20,
-                marginVertical: 2,
-                letterSpacing: 0.4,
-                color: theme.palette.light
-            };
-
-            break;
-        case undefined:
-            break;
-        default:
-            throw new Error(`Invalid variant "${variant}"`)
-    }
-
-    let colorStyle = {};
-    switch (color) {
-        case 'primary':
-        case 'primary.main':
-            colorStyle = {
-                color: theme.palette.primary.main
-            };
-
-            break;
-        case 'contrast':
-        case 'primary.contrast':
-            colorStyle = {
-                color: theme.palette.primary.contrast
-            };
-
-            break;
-        case 'mono':
-        case 'mono.main':
-            colorStyle = {
-                color: theme.palette.mono.main
-            };
-
-            break;
-        case 'error':
-        case 'error.main':
-            colorStyle = {
-                color: theme.palette.error.main
-            };
-
-            break;
-        case 'mono.contrast':
-            colorStyle = {
-                color: theme.palette.mono.contrast
-            };
-
-            break;
-        case undefined:
-            break;
-        default:
-            throw new Error(`Invalid color "${color}"`)
-    }
-
-    let wrapStyle = wrap
-        ? {
-            flexShrink: 1
-        }
-        : {};
-
-    return {
-        ...variantStyle,
-        ...colorStyle,
-        ...prepareFlexChildStyle({center: center}),
-        ...prepareMarginStyle(margin, theme),
-        textAlign: center ? 'center' : undefined,
-        ...wrapStyle,
-        ...style,
-    }
-};
-
-export default withTheme(Text);
+export default StyledText;

@@ -9,15 +9,17 @@ var _react = _interopRequireDefault(require("react"));
 
 var _reactNative = require("react-native");
 
-var _uiSpec = require("@yosmy/ui-spec");
+var _primitiveUiSpec = require("@yosmy/primitive-ui-spec");
 
-var _reactNativeElements = require("react-native-elements");
+var _style = require("@yosmy/style");
 
-var _Container = _interopRequireDefault(require("./Container"));
+var _jsxRuntime = require("react/jsx-runtime");
 
-var _Text = _interopRequireDefault(require("./Text"));
+var _templateObject;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -25,111 +27,62 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 
-var Input = function Input(props) {
-  var errorMessage = buildErrorMessage(props.error);
-  var autoFocus = buildAutoFocus(props.focus);
-  var autoCapitalize = buildAutoCapitalize(props.capitalize);
-  var keyboardType = buildKeyboardType(props.keyboard);
-  var maxLength = buildMaxLength(props.length);
-  var secureTextEntry = buildSecureTextEntry(props.secure);
-  var multilineProps;
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
-  if (props.multi) {
-    multilineProps = {
-      multiline: true,
-      numberOfLines: props.multi
-    };
-  }
+var Input = function Input(_ref) {
+  var id = _ref.id,
+      value = _ref.value,
+      placeholder = _ref.placeholder,
+      focus = _ref.focus,
+      keyboard = _ref.keyboard,
+      length = _ref.length,
+      multi = _ref.multi,
+      secure = _ref.secure,
+      capitalize = _ref.capitalize,
+      onChange = _ref.onChange,
+      style = _ref.style,
+      children = _ref.children,
+      props = _objectWithoutProperties(_ref, ["id", "value", "placeholder", "focus", "keyboard", "length", "multi", "secure", "capitalize", "onChange", "style", "children"]);
 
-  var onChangeText = buildOnChangeText(props.onChange);
-  var leftIcon = buildLeftIcon(props.start);
-  var rightIcon = buildRightIcon(props.end);
-  var inputContainerStyle = buildInputContainerStyle(props.theme);
-  return _react["default"].createElement(_Container["default"], {
-    flow: "column",
-    align: props.align,
-    margin: props.margin,
-    width: props.width,
-    flex: props.flex,
-    background: props.background,
-    style: props.style
-  }, _react["default"].createElement(_reactNativeElements.Input, _extends({
-    testID: props.id,
-    value: props.value,
-    placeholder: props.placeholder,
-    errorMessage: errorMessage,
-    leftIcon: leftIcon,
-    leftIconContainerStyle: {
-      marginRight: props.theme.spacing(1)
-    },
-    rightIcon: rightIcon,
-    autoFocus: autoFocus,
-    autoCapitalize: autoCapitalize,
-    keyboardType: keyboardType,
+  delete props.align;
+  delete props.margin;
+  delete props.padding;
+  delete props.border;
+  delete props.width;
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.TextInput, _objectSpread({
+    testID: id,
+    value: value,
+    placeholder: placeholder,
+    autoFocus: focus,
+    keyboardType: buildKeyboardType(keyboard),
     returnKeyType: "done",
-    maxLength: maxLength,
-    secureTextEntry: secureTextEntry
-  }, multilineProps, {
-    onChangeText: onChangeText,
-    inputContainerStyle: inputContainerStyle,
-    errorStyle: {
-      marginLeft: props.theme.spacing(1)
-    },
-    containerStyle: {
-      paddingHorizontal: 0
-    }
-  }), props.children), props.help && (!Array.isArray(props.help) ? _react["default"].createElement(_Text["default"], {
-    margin: {
-      left: 1
-    }
-  }, props.help) : props.help.map(function (line, i) {
-    return _react["default"].createElement(_Text["default"], {
-      key: i,
-      margin: {
-        left: 1
-      }
-    }, line);
-  })));
+    maxLength: length,
+    multiline: multi ? true : undefined,
+    numberOfLines: multi ? multi : undefined,
+    secureTextEntry: secure,
+    autoCapitalize: capitalize,
+    onChangeText: onChange,
+    style: style
+  }, props));
 };
 
-Input.propTypes = _uiSpec.InputProps;
-
-var buildErrorMessage = function buildErrorMessage(error) {
-  return error;
-};
-
-var buildAutoFocus = function buildAutoFocus(focus) {
-  return focus;
-};
-
-var buildAutoCapitalize = function buildAutoCapitalize(capitalize) {
-  if (!capitalize) {
-    return "none";
-  }
-
-  return capitalize;
-};
-
-var buildMaxLength = function buildMaxLength(length) {
-  return length;
-};
-
-var buildSecureTextEntry = function buildSecureTextEntry(secure) {
-  return secure;
+Input.propTypes = _primitiveUiSpec.Input.Props;
+Input.defaultProps = {
+  capitalize: "none"
 };
 
 var buildKeyboardType = function buildKeyboardType(keyboard) {
   switch (keyboard) {
-    case 'number':
-      return 'number-pad';
+    case "number":
+      return "number-pad";
 
-    case 'decimal':
-      return 'decimal-pad';
+    case "decimal":
+      return "decimal-pad";
 
-    case 'phone':
-      return 'phone-pad';
+    case "phone":
+      return "phone-pad";
 
     default:
       // Need to be undefined, to make autoCapitalize works
@@ -138,61 +91,24 @@ var buildKeyboardType = function buildKeyboardType(keyboard) {
   }
 };
 
-var buildOnChangeText = function buildOnChangeText(onChange) {
-  return onChange;
-};
-
-var buildLeftIcon = function buildLeftIcon(start) {
-  // Not start prop set?
-  if (!start) {
-    return undefined;
-  }
-
-  start = start(); // Start prop set, but sometimes is null, like a country prefix, but with no country selected yet
-
-  if (!start) {
-    return undefined;
-  }
-
-  var props = start.props; // Is a Text component?
-
-  if (start.props.children) {
-    props = _objectSpread({
-      style: _objectSpread({
-        // Same size as input
-        fontSize: 18
-      }, props.style)
-    }, props);
-  } else {
-    props = _objectSpread({
-      // Icon size
-      size: 30
-    }, props);
-  }
-
-  return function () {
-    return _react["default"].createElement(start.type, props);
-  };
-};
-
-var buildRightIcon = function buildRightIcon(end) {
-  var End;
-  End = end;
-
-  if (!End) {
-    return undefined;
-  }
-
-  return _react["default"].createElement(End, null);
-};
-
-var buildInputContainerStyle = function buildInputContainerStyle(theme) {
-  return {
-    borderColor: theme.colors.divider,
-    borderBottomWidth: _reactNative.StyleSheet.hairlineWidth
-  };
-};
-
-var _default = (0, _reactNativeElements.withTheme)(Input);
-
+var StyledInput = (0, _style.styled)(Input)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n    ", "\n    ", "\n    ", "\n    \n    ", "\n    ", "\n    ", "\n    ", "\n    \n    ", "\n    ", "\n"])), function (props) {
+  return _primitiveUiSpec.Container.compileAlign(props.align);
+}, function (props) {
+  return _primitiveUiSpec.Container.compileMargin(props.margin);
+}, function (props) {
+  return _primitiveUiSpec.Container.compilePadding(props.padding);
+}, function (props) {
+  return _primitiveUiSpec.Container.compileBorderWidth(props.border);
+}, function (props) {
+  return _primitiveUiSpec.Container.compileBorderStyle(props.border);
+}, function (props) {
+  return _primitiveUiSpec.Container.compileBorderColor(props.border);
+}, function (props) {
+  return _primitiveUiSpec.Container.compileBorderRadius(props.border);
+}, function (props) {
+  return _primitiveUiSpec.Container.compileWidth(props.width);
+}, function (props) {
+  return _primitiveUiSpec.Container.compileHeight(props.height);
+});
+var _default = StyledInput;
 exports["default"] = _default;

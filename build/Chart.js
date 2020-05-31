@@ -11,33 +11,34 @@ var _propTypes = _interopRequireDefault(require("prop-types"));
 
 var _victoryNative = require("victory-native");
 
-var _reactNativeElements = require("react-native-elements");
+var _jsxRuntime = require("react/jsx-runtime");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var Chart = function Chart(props) {
-  return _react["default"].createElement(_victoryNative.VictoryChart // https://github.com/FormidableLabs/victory-native/issues/501
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_victoryNative.VictoryChart // https://github.com/FormidableLabs/victory-native/issues/501
   // theme={VictoryTheme.material}
   , {
-    containerComponent: _react["default"].createElement(_victoryNative.VictoryVoronoiContainer, {
+    containerComponent: /*#__PURE__*/(0, _jsxRuntime.jsx)(_victoryNative.VictoryVoronoiContainer, {
       labels: function labels(_ref) {
         var datum = _ref.datum;
         return "".concat(props.xAxis.name.toLowerCase(), " ").concat(datum[props.xAxis.dataKey], ", ").concat(datum[props.lines[0].dataKey], " ").concat(props.lines[0].unit);
       }
-    })
-  }, _react["default"].createElement(_victoryNative.VictoryLine, {
-    style: {
-      data: {
-        stroke: props.lines[0].stroke
+    }),
+    children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_victoryNative.VictoryLine, {
+      style: {
+        data: {
+          stroke: props.lines[0].stroke
+        },
+        parent: {
+          border: "1px solid #ccc"
+        }
       },
-      parent: {
-        border: "1px solid #ccc"
-      }
-    },
-    data: props.data,
-    x: props.xAxis.dataKey,
-    y: props.lines[0].dataKey
-  }));
+      data: props.data,
+      x: props.xAxis.dataKey,
+      y: props.lines[0].dataKey
+    })
+  });
 };
 
 Chart.propTypes = {
@@ -53,7 +54,5 @@ Chart.propTypes = {
     stroke: _propTypes["default"].string
   }).isRequired)
 };
-
-var _default = (0, _reactNativeElements.withTheme)(Chart);
-
+var _default = Chart;
 exports["default"] = _default;

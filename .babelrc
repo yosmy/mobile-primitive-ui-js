@@ -6,6 +6,8 @@
     "@babel/plugin-proposal-object-rest-spread",
     "@babel/plugin-proposal-optional-chaining",
     "@babel/plugin-transform-flow-strip-types",
-    "@babel/plugin-transform-react-jsx"
+    ["@babel/plugin-transform-react-jsx", {
+      "runtime": "automatic"
+    }]
   ]
 }

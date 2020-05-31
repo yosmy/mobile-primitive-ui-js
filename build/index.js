@@ -3,10 +3,22 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+Object.defineProperty(exports, "Layout", {
+  enumerable: true,
+  get: function get() {
+    return _Layout["default"];
+  }
+});
 Object.defineProperty(exports, "BlankLayout", {
   enumerable: true,
   get: function get() {
     return _BlankLayout["default"];
+  }
+});
+Object.defineProperty(exports, "BufferList", {
+  enumerable: true,
+  get: function get() {
+    return _BufferList["default"];
   }
 });
 Object.defineProperty(exports, "Button", {
@@ -21,16 +33,22 @@ Object.defineProperty(exports, "Chart", {
     return _Chart["default"];
   }
 });
+Object.defineProperty(exports, "CirclePlaceholder", {
+  enumerable: true,
+  get: function get() {
+    return _CirclePlaceholder["default"];
+  }
+});
 Object.defineProperty(exports, "Container", {
   enumerable: true,
   get: function get() {
-    return _Container["default"];
+    return _Container.Container;
   }
 });
-Object.defineProperty(exports, "Content", {
+Object.defineProperty(exports, "normalizeBackground", {
   enumerable: true,
   get: function get() {
-    return _Content["default"];
+    return _Container.normalizeBackground;
   }
 });
 Object.defineProperty(exports, "DatePicker", {
@@ -57,16 +75,16 @@ Object.defineProperty(exports, "EmptyLayout", {
     return _EmptyLayout["default"];
   }
 });
-Object.defineProperty(exports, "Flag", {
+Object.defineProperty(exports, "FooterLayout", {
   enumerable: true,
   get: function get() {
-    return _Flag["default"];
+    return _FooterLayout["default"];
   }
 });
-Object.defineProperty(exports, "Header", {
+Object.defineProperty(exports, "Gradient", {
   enumerable: true,
   get: function get() {
-    return _Header["default"];
+    return _Gradient["default"];
   }
 });
 Object.defineProperty(exports, "Image", {
@@ -81,10 +99,22 @@ Object.defineProperty(exports, "Input", {
     return _Input["default"];
   }
 });
-Object.defineProperty(exports, "BufferList", {
+Object.defineProperty(exports, "Json", {
   enumerable: true,
   get: function get() {
-    return _BufferList["default"];
+    return _Json["default"];
+  }
+});
+Object.defineProperty(exports, "LinePlaceholder", {
+  enumerable: true,
+  get: function get() {
+    return _LinePlaceholder["default"];
+  }
+});
+Object.defineProperty(exports, "Loading", {
+  enumerable: true,
+  get: function get() {
+    return _Loading["default"];
   }
 });
 Object.defineProperty(exports, "Markdown", {
@@ -99,28 +129,10 @@ Object.defineProperty(exports, "Modal", {
     return _Modal["default"];
   }
 });
-Object.defineProperty(exports, "Placeholder", {
-  enumerable: true,
-  get: function get() {
-    return _Placeholder["default"];
-  }
-});
-Object.defineProperty(exports, "Platform", {
-  enumerable: true,
-  get: function get() {
-    return _Platform["default"];
-  }
-});
 Object.defineProperty(exports, "Progress", {
   enumerable: true,
   get: function get() {
     return _Progress["default"];
-  }
-});
-Object.defineProperty(exports, "Root", {
-  enumerable: true,
-  get: function get() {
-    return _Root["default"];
   }
 });
 Object.defineProperty(exports, "Text", {
@@ -129,28 +141,26 @@ Object.defineProperty(exports, "Text", {
     return _Text["default"];
   }
 });
-Object.defineProperty(exports, "ThemeProvider", {
+Object.defineProperty(exports, "Upload", {
   enumerable: true,
   get: function get() {
-    return _reactNativeElements.ThemeProvider;
-  }
-});
-Object.defineProperty(exports, "withTheme", {
-  enumerable: true,
-  get: function get() {
-    return _reactNativeElements.withTheme;
+    return _Upload["default"];
   }
 });
 
+var _Layout = _interopRequireDefault(require("./Layout"));
+
 var _BlankLayout = _interopRequireDefault(require("./BlankLayout"));
+
+var _BufferList = _interopRequireDefault(require("./BufferList"));
 
 var _Button = _interopRequireDefault(require("./Button"));
 
 var _Chart = _interopRequireDefault(require("./Chart"));
 
-var _Container = _interopRequireDefault(require("./Container"));
+var _CirclePlaceholder = _interopRequireDefault(require("./CirclePlaceholder"));
 
-var _Content = _interopRequireDefault(require("./Content"));
+var _Container = require("./Container");
 
 var _DatePicker = _interopRequireDefault(require("./DatePicker"));
 
@@ -160,30 +170,28 @@ var _Dropdown = _interopRequireDefault(require("./Dropdown"));
 
 var _EmptyLayout = _interopRequireDefault(require("./EmptyLayout"));
 
-var _Flag = _interopRequireDefault(require("./Flag"));
+var _FooterLayout = _interopRequireDefault(require("./FooterLayout"));
 
-var _Header = _interopRequireDefault(require("./Header"));
+var _Gradient = _interopRequireDefault(require("./Gradient"));
 
 var _Image = _interopRequireDefault(require("./Image"));
 
 var _Input = _interopRequireDefault(require("./Input"));
 
-var _BufferList = _interopRequireDefault(require("./BufferList"));
+var _Json = _interopRequireDefault(require("./Json"));
+
+var _LinePlaceholder = _interopRequireDefault(require("./LinePlaceholder"));
+
+var _Loading = _interopRequireDefault(require("./Loading"));
 
 var _Markdown = _interopRequireDefault(require("./Markdown"));
 
 var _Modal = _interopRequireDefault(require("./Modal"));
 
-var _Placeholder = _interopRequireDefault(require("./Placeholder"));
-
-var _Platform = _interopRequireDefault(require("./Platform"));
-
 var _Progress = _interopRequireDefault(require("./Progress"));
-
-var _Root = _interopRequireDefault(require("./Root"));
 
 var _Text = _interopRequireDefault(require("./Text"));
 
-var _reactNativeElements = require("react-native-elements");
+var _Upload = _interopRequireDefault(require("./Upload"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }

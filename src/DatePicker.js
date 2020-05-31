@@ -1,16 +1,25 @@
-import React from 'react';
+import React from "react";
+import PropTypes from "prop-types";
 import BaseDatePicker from "react-native-datepicker";
 
-const DatePicker = (props) => {
+const DatePicker = ({
+    value, format, onChange
+}) => {
     return <BaseDatePicker
-        date={props.value}
-        mode={props.mode || "date"}
-        placeholder={props.placeholder || "Selecciona la fecha"}
-        format={props.format}
+        date={value}
+        mode="date"
+        placeholder="Selecciona la fecha"
+        format={format}
         confirmBtnText="Confirmar"
         cancelBtnText="Cancelar"
-        onChange={props.onChange}
+        onChange={onChange}
     />;
+};
+
+DatePicker.propTypes = {
+    value: PropTypes.string,
+    format: PropTypes.string,
+    onChange: PropTypes.func.isRequired,
 };
 
 export default DatePicker;

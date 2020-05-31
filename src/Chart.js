@@ -1,7 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {VictoryChart, VictoryTheme, VictoryLegend, VictoryLine, VictoryVoronoiContainer} from 'victory-native';
-import {withTheme} from "react-native-elements";
+import React from "react";
+import PropTypes from "prop-types";
+import {VictoryChart, VictoryLine, VictoryVoronoiContainer} from "victory-native";
 
 const Chart = (props) => {
     return <VictoryChart
@@ -57,4 +56,4 @@ Chart.propTypes = {
     }).isRequired),
 };
 
-export default withTheme(Chart);
+export default Chart;

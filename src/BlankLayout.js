@@ -1,16 +1,21 @@
-import React from 'react';
-import Content from './Content';
+import React from "react";
+import {BlankLayout as Spec} from "@yosmy/primitive-ui-spec";
+import Content from "./Layout/Content";
 
-const BlankLayout = (props) => {
+const BlankLayout = ({
+    align, padding, grow, scroll,
+    children
+}) => {
     return <Content
-        {...props}
-        background={props.background}
-        align={props.align}
-        padding={props.padding}
-        grow={props.grow}
+        align={align}
+        padding={padding}
+        grow={grow}
+        scroll={scroll}
     >
-        {props.children}
+        {children}
     </Content>
 };
+
+BlankLayout.propTypes = Spec.Props;
 
 export default BlankLayout;

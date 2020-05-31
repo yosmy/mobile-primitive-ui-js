@@ -1,134 +1,50 @@
-import React from 'react';
-import {StyleSheet} from 'react-native';
-import {
-    InputProps,
-} from '@yosmy/ui-spec';
-import {Input as BaseInput, withTheme} from 'react-native-elements';
-import Container from "./Container";
-import Text from "./Text";
+import React from "react";
+import {TextInput} from "react-native";
+import {Container as ContainerSpec, Input as Spec} from "@yosmy/primitive-ui-spec";
+import {styled} from "@yosmy/style";
 
-const Input = (props) => {
-    const errorMessage = buildErrorMessage(props.error);
+const Input = ({
+    id, value, placeholder, focus, keyboard, length, multi, secure, capitalize,
+    onChange, style, children, ...props
+}) => {
+    delete props.align;
+    delete props.margin;
+    delete props.padding;
+    delete props.border;
+    delete props.width;
 
-    const autoFocus = buildAutoFocus(props.focus);
-
-    const autoCapitalize = buildAutoCapitalize(props.capitalize);
-
-    const keyboardType = buildKeyboardType(props.keyboard);
-
-    const maxLength = buildMaxLength(props.length);
-
-    const secureTextEntry = buildSecureTextEntry(props.secure);
-
-    let multilineProps;
-    if (props.multi) {
-        multilineProps = {
-            multiline: true,
-            numberOfLines: props.multi
-        };
-    }
-
-    const onChangeText = buildOnChangeText(props.onChange);
-
-    const leftIcon = buildLeftIcon(props.start);
-
-    const rightIcon = buildRightIcon(props.end);
-
-    const inputContainerStyle = buildInputContainerStyle(props.theme);
-
-    return <Container
-        flow='column'
-        align={props.align}
-        margin={props.margin}
-        width={props.width}
-        flex={props.flex}
-        background={props.background}
-        style={props.style}
-    >
-        <BaseInput
-            testID={props.id}
-            value={props.value}
-            placeholder={props.placeholder}
-            errorMessage={errorMessage}
-            leftIcon={leftIcon}
-            leftIconContainerStyle={{
-                marginRight: props.theme.spacing(1),
-            }}
-            rightIcon={rightIcon}
-            autoFocus={autoFocus}
-            autoCapitalize={autoCapitalize}
-            keyboardType={keyboardType}
-            returnKeyType="done"
-            maxLength={maxLength}
-            secureTextEntry={secureTextEntry}
-            {...multilineProps}
-            onChangeText={onChangeText}
-            inputContainerStyle={inputContainerStyle}
-            errorStyle={{
-                marginLeft: props.theme.spacing(1),
-            }}
-            containerStyle={{
-                paddingHorizontal: 0
-            }}
-        >
-            {props.children}
-        </BaseInput>
-        {props.help && (!Array.isArray(props.help)
-                ? <Text
-                    margin={{
-                        left: 1
-                    }}
-                >
-                    {props.help}
-                </Text>
-                : props.help.map((line, i) => {
-                    return <Text
-                        key={i}
-                        margin={{
-                            left: 1
-                        }}
-                    >
-                        {line}
-                    </Text>
-                })
-        )}
-    </Container>
+    return <TextInput
+        testID={id}
+        value={value}
+        placeholder={placeholder}
+        autoFocus={focus}
+        keyboardType={buildKeyboardType(keyboard)}
+        returnKeyType="done"
+        maxLength={length}
+        multiline={multi ? true : undefined}
+        numberOfLines={multi ? multi : undefined}
+        secureTextEntry={secure}
+        autoCapitalize={capitalize}
+        onChangeText={onChange}
+        style={style}
+        {...props} // key
+    />
 };
 
-Input.propTypes = InputProps;
+Input.propTypes = Spec.Props;
 
-const buildErrorMessage = (error) => {
-    return error;
-};
-
-const buildAutoFocus = (focus) => {
-    return focus;
-};
-
-const buildAutoCapitalize = (capitalize) => {
-    if (!capitalize) {
-        return "none";
-    }
-
-    return capitalize;
-};
-
-const buildMaxLength = (length) => {
-    return length;
-};
-
-const buildSecureTextEntry = (secure) => {
-    return secure;
+Input.defaultProps = {
+    capitalize: "none"
 };
 
 const buildKeyboardType = (keyboard) => {
     switch (keyboard) {
-        case 'number':
-            return 'number-pad';
-        case 'decimal':
-            return 'decimal-pad';
-        case 'phone':
-            return 'phone-pad';
+        case "number":
+            return "number-pad";
+        case "decimal":
+            return "decimal-pad";
+        case "phone":
+            return "phone-pad";
         default:
             // Need to be undefined, to make autoCapitalize works
             // https://github.com/facebook/react-native/issues/8932#issuecomment-287013962
@@ -136,65 +52,18 @@ const buildKeyboardType = (keyboard) => {
     }
 };
 
-const buildOnChangeText = (onChange) => {
-    return onChange;
-};
+const StyledInput = styled(Input)`
+    ${props => ContainerSpec.compileAlign(props.align)}
+    ${props => ContainerSpec.compileMargin(props.margin)}
+    ${props => ContainerSpec.compilePadding(props.padding)}
+    
+    ${props => ContainerSpec.compileBorderWidth(props.border)}
+    ${props => ContainerSpec.compileBorderStyle(props.border)}
+    ${props => ContainerSpec.compileBorderColor(props.border)}
+    ${props => ContainerSpec.compileBorderRadius(props.border)}
+    
+    ${props => ContainerSpec.compileWidth(props.width)}
+    ${props => ContainerSpec.compileHeight(props.height)}
+`;
 
-const buildLeftIcon = (start) => {
-    // Not start prop set?
-    if (!start) {
-        return undefined;
-    }
-
-    start = start();
-
-    // Start prop set, but sometimes is null, like a country prefix, but with no country selected yet
-    if (!start) {
-        return undefined;
-    }
-
-    let props = start.props;
-
-    // Is a Text component?
-    if (start.props.children) {
-        props = {
-            style: {
-                // Same size as input
-                fontSize: 18,
-                ...props.style
-            },
-            ...props
-        };
-    } else {
-        props = {
-            // Icon size
-            size: 30,
-            ...props
-        }
-    }
-
-    return () => {
-        return <start.type {...props} />
-    };
-};
-
-const buildRightIcon = (end) => {
-    let End;
-
-    End = end;
-
-    if (!End) {
-        return undefined;
-    }
-
-    return <End />;
-};
-
-const buildInputContainerStyle = (theme) => {
-    return  {
-        borderColor: theme.colors.divider,
-        borderBottomWidth: StyleSheet.hairlineWidth,
-    };
-};
-
-export default withTheme(Input);
+export default StyledInput;

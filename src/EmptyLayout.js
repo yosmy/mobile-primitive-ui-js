@@ -1,10 +1,14 @@
-import React from 'react';
-import {withTheme} from 'react-native-elements';
+import React, {Fragment} from "react";
+import {EmptyLayout as Spec} from "@yosmy/primitive-ui-spec";
 
-const EmptyLayout = ({children, ...props}) => {
-    return <React.Fragment>
+const EmptyLayout = ({
+    children
+}) => {
+    return <Fragment>
         {children}
-    </React.Fragment>;
+    </Fragment>;
 };
 
-export default withTheme(EmptyLayout);
+EmptyLayout.propTypes = Spec.Props;
+
+export default EmptyLayout;

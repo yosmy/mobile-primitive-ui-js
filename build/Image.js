@@ -7,53 +7,64 @@ exports["default"] = void 0;
 
 var _react = _interopRequireDefault(require("react"));
 
-var _propTypes = _interopRequireDefault(require("prop-types"));
-
 var _reactNative = require("react-native");
 
-var _reactNativeElements = require("react-native-elements");
+var _primitiveUiSpec = require("@yosmy/primitive-ui-spec");
 
-var _uiSpec = require("@yosmy/ui-spec");
+var _style = require("@yosmy/style");
+
+var _jsxRuntime = require("react/jsx-runtime");
+
+var _templateObject;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
-var Image = function Image(props) {
-  var theme = props.theme,
-      source = props.source,
-      center = props.center,
-      margin = props.margin,
-      width = props.width,
-      height = props.height,
-      style = props.style;
+var Image = function Image(_ref) {
+  var source = _ref.source,
+      resize = _ref.resize,
+      onClick = _ref.onClick,
+      style = _ref.style,
+      props = _objectWithoutProperties(_ref, ["source", "resize", "onClick", "style"]);
+
+  delete props.flow;
+  delete props.align;
+  delete props.margin;
+  delete props.border;
+  delete props.width;
+  delete props.height;
   source = buildSource(source);
-  var flexChildStyle = (0, _uiSpec.prepareFlexChildStyle)({
-    center: center
-  });
-  var marginStyle = (0, _uiSpec.prepareMarginStyle)(margin, theme);
-  style = _objectSpread({}, flexChildStyle, {}, marginStyle, {
-    width: width,
-    height: height
-  }, style);
-  return _react["default"].createElement(_reactNative.Image, {
+  var image = /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.Image, {
     source: source,
+    resizeMode: resize,
     fadeDuration: 0 // Removes the fade effect when showing the image
     ,
     style: style
   });
+
+  if (onClick) {
+    image = /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.TouchableOpacity, {
+      onPress: onClick,
+      activeOpacity: 0.8,
+      children: image
+    });
+  }
+
+  return image;
 };
 
-Image.propTypes = {
-  source: _propTypes["default"].any
+Image.propTypes = _primitiveUiSpec.Image.Props;
+Image.defaultProps = {
+  resize: "cover"
 };
 
 var buildSource = function buildSource(source) {
-  if (typeof source === 'string') {
+  if (typeof source === "string") {
     source = {
       uri: source
     };
@@ -62,6 +73,22 @@ var buildSource = function buildSource(source) {
   return source;
 };
 
-var _default = (0, _reactNativeElements.withTheme)(Image);
-
+var StyledImage = (0, _style.styled)(Image)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n    ", "\n    ", "\n    ", "\n    ", "\n    ", "\n    ", "\n    ", "\n    ", "\n"])), function (props) {
+  return _primitiveUiSpec.Container.compileFlex(props.flex);
+}, function (props) {
+  return _primitiveUiSpec.Container.compileAlign(props.align);
+}, function (props) {
+  return _primitiveUiSpec.Container.compileMargin(props.margin);
+}, function (props) {
+  return _primitiveUiSpec.Container.compileBorderWidth(props.border);
+}, function (props) {
+  return _primitiveUiSpec.Container.compileBorderColor(props.border);
+}, function (props) {
+  return _primitiveUiSpec.Container.compileBorderRadius(props.border);
+}, function (props) {
+  return _primitiveUiSpec.Container.compileWidth(props.width);
+}, function (props) {
+  return _primitiveUiSpec.Container.compileHeight(props.height);
+});
+var _default = StyledImage;
 exports["default"] = _default;

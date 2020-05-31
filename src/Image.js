@@ -1,47 +1,47 @@
-import React from 'react';
-import PropTypes from "prop-types";
-import {Image as BaseImage} from "react-native";
-import {withTheme} from 'react-native-elements';
-import {
-    prepareMarginStyle,
-    prepareFlexChildStyle
-} from '@yosmy/ui-spec'
+import React from "react";
+import {Image as BaseImage, TouchableOpacity} from "react-native";
+import {Image as Spec, Container as ContainerSpec} from "@yosmy/primitive-ui-spec"
+import {styled} from "@yosmy/style";
 
-const Image = (props) => {
-    let {theme, source, center, margin, width, height, style} = props;
+const Image = ({
+   source, resize, onClick, style, ...props
+}) => {
+    delete props.flow;
+    delete props.align;
+    delete props.margin;
+    delete props.border;
+    delete props.width;
+    delete props.height;
 
     source = buildSource(source);
 
-    const flexChildStyle = prepareFlexChildStyle({
-        center: center
-    });
-
-    const marginStyle = prepareMarginStyle(
-        margin,
-        theme
-    );
-
-    style = {
-        ...flexChildStyle,
-        ...marginStyle,
-        width: width,
-        height: height,
-        ...style,
-    };
-
-    return <BaseImage
+    let image = <BaseImage
         source={source}
+        resizeMode={resize}
         fadeDuration={0} // Removes the fade effect when showing the image
         style={style}
     />;
+
+    if (onClick) {
+        image = <TouchableOpacity
+            onPress={onClick}
+            activeOpacity={0.8}
+        >
+            {image}
+        </TouchableOpacity>;
+    }
+
+    return image;
 };
 
-Image.propTypes = {
-    source: PropTypes.any,
-};
+Image.propTypes = Spec.Props;
+
+Image.defaultProps = {
+    resize: "cover"
+}
 
 const buildSource = (source) => {
-    if (typeof source === 'string') {
+    if (typeof source === "string") {
         source = {
             uri: source
         }
@@ -50,4 +50,15 @@ const buildSource = (source) => {
     return source;
 };
 
-export default withTheme(Image);
+const StyledImage = styled(Image)`
+    ${props => ContainerSpec.compileFlex(props.flex)}
+    ${props => ContainerSpec.compileAlign(props.align)}
+    ${props => ContainerSpec.compileMargin(props.margin)}
+    ${props => ContainerSpec.compileBorderWidth(props.border)}
+    ${props => ContainerSpec.compileBorderColor(props.border)}
+    ${props => ContainerSpec.compileBorderRadius(props.border)}
+    ${props => ContainerSpec.compileWidth(props.width)}
+    ${props => ContainerSpec.compileHeight(props.height)}
+`;
+
+export default StyledImage;

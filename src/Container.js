@@ -1,157 +1,146 @@
-import React from 'react';
-import {ImageBackground, TouchableOpacity, View} from "react-native";
-import {withTheme} from 'react-native-elements';
-import {
-    prepareMobileFlexParentStyle as prepareFlexParentStyle,
-    prepareFlexChildStyle,
-    prepareMarginStyle,
-    preparePaddingStyle,
-    prepareMobileBorderStyle as prepareBorderStyle,
-} from "@yosmy/ui-spec";
+import React from "react";
+import {ImageBackground, TouchableOpacity, StyleSheet, View} from "react-native";
+import {LinearGradient} from "expo-linear-gradient";
+import * as Animatable from 'react-native-animatable';
+import {styled} from "@yosmy/style";
+import {Container as Spec} from "@yosmy/primitive-ui-spec"
 
 const Container = ({
-   theme,
-   flow, align, flex, left, center, right, margin, padding, border,
-   width, height, background, color,
-   onClick,
-   style, children,
-   ...props
+   background, gradient, animation, animationRef, onClick, style, children, ...props
 }) => {
-    let outsideStyle = {
-        flex: flex ? (typeof flex === 'number' ? flex : 1) : undefined,
-        ...prepareFlexChildStyle({left: left, center: center, right: right}),
-        ...prepareMarginStyle(margin, theme),
-        ...preparePaddingStyle(padding, theme),
-        ...prepareBorderStyle(border, theme),
-        ...style
-    };
+    delete props.flow;
+    delete props.align;
+    delete props.flex;
+    delete props.margin;
+    delete props.padding;
+    delete props.border;
+    delete props.width;
+    delete props.height;
+    delete props.z;
+    delete props.position;
+    delete props.shadow;
+    delete props.opacity;
 
-    const insideStyle = {
-        ...prepareFlexParentStyle({
-            flow: flow,
-            align: align,
-        }),
-    };
+    let Component = View;
+    let customProps = {};
 
-    if (typeof width !== 'undefined') {
-        if (width === 'full') {
-            width = '100%';
-        }
-
-        outsideStyle = {
-            ...outsideStyle,
-            width: width
-        }
-    }
-
-    if (typeof height !== 'undefined') {
-        outsideStyle = {
-            ...outsideStyle,
-            height: height
-        }
-    }
-
-    /* Convert background into an array */
-
-    if (typeof background !== 'undefined' && typeof background !== 'object') {
-        // It's a color?
-        if (typeof background === 'string') {
-            if (background.indexOf('#') === 0) {
-                background = {
-                    color: background,
-                }
-            } else {
-                switch (background) {
-                    case 'mono':
-                    case 'mono.contrast':
-                        background = {
-                            color: theme.palette.mono.contrast
-                        };
-
-                        break;
-                    default:
-                        throw new Error(`Color "${color}" not implemented`)
-                }
-            }
-        }
-        // It's an image
-        else {
-            background = {
-                image: background,
-                resize: 'cover'
-            }
-        }
-    }
-
-    let component;
+    background = normalizeBackground(background);
 
     if (background) {
-        if (typeof background.image !== 'undefined') {
-            const source = typeof background.image === 'string'
-                ? {uri: background.image}
-                : background.image;
+        if (typeof background.image !== "undefined") {
+            Component = ImageBackground;
 
-            component = <ImageBackground
-                source={source}
-                resizeMode={background.resize}
-                style={{
-                    ...outsideStyle,
-                    ...insideStyle,
-                }}
-                {...props} // key
-            >
-                {children}
-            </ImageBackground>;
-        } else if (typeof background.color !== 'undefined') {
-            component = <View
-                style={{
+            customProps = {
+                source: typeof background.image === "string"
+                    ? {uri: background.image}
+                    : background.image,
+                resizeMode: background.resize
+            }
+        } else if (typeof background.color !== "undefined") {
+            style = StyleSheet.compose(
+                style,
+                {
                     backgroundColor: background.color,
-                    ...outsideStyle,
-                    ...insideStyle,
-                }}
-                {...props} // key
-            >
-                {children}
-            </View>;
+                }
+            )
         } else {
             throw new Error("No image or color for background");
         }
-    } else {
-        component = <View
-            style={{
-                ...outsideStyle,
-                ...insideStyle,
-            }}
-            {...props} // key
-        >
-            {children}
-        </View>
+    } else if (gradient) {
+        Component = LinearGradient;
+
+        customProps = {
+            colors: gradient.colors,
+            locations: gradient.locations
+        }
     }
 
-    if (typeof onClick !== 'undefined') {
-        const {style, children, ...componentProps} = component.props;
+    if (typeof onClick !== "undefined") {
+        Component = TouchableOpacity;
 
-        component = <TouchableOpacity
-            onPress={onClick}
-            style={{
-                ...style,
-                ...outsideStyle,
-            }}
-        >
-            <component.type
-                {...componentProps}
-                style={{
-                    ...insideStyle,
-                }}
-            >
-                {children}
-            </component.type>
-        </TouchableOpacity>;
+        customProps = {
+            onPress: onClick
+        };
     }
 
-    return <component.type
-        {...component.props}
-    />;
+    if (animation || animationRef) {
+        Component = Animatable.View;
+
+        if (animationRef) {
+            customProps = {
+                ref: animationRef
+            };
+        } else {
+            customProps = {
+                animation: animation
+            };
+        }
+    }
+
+    return <Component
+        {...customProps}
+        style={style}
+        {...props} // key
+    >
+        {children}
+    </Component>
 };
 
-export default withTheme(Container);
+Container.propTypes = Spec.Props;
+
+const normalizeBackground = (background) => {
+    const type = typeof background;
+
+    switch (type) {
+        case "undefined":
+            break;
+        // It"s a color
+        case "string":
+            background = {
+                color: background,
+            }
+
+            break;
+        // It"s an image
+        case "number":
+            background = {
+                image: background,
+                resize: "cover"
+            }
+
+            break;
+        case "object":
+            break;
+        default:
+            throw new Error(`Invalid type ${type}`);
+    }
+
+    return background;
+};
+
+const StyledContainer = styled(Container)`
+    ${props => Spec.compileFlow(props.flow)}
+    ${props => Spec.compileFlex(props.flex)}
+    ${props => Spec.compileAlign(props.align)}
+
+    ${props => Spec.compileWidth(props.width)}
+    ${props => Spec.compileHeight(props.height)}
+
+    ${props => Spec.compileMargin(props.margin)}
+    ${props => Spec.compilePadding(props.padding)}
+
+    ${props => Spec.compileBorderWidth(props.border)}
+    ${props => Spec.compileBorderStyle(props.border)}
+    ${props => Spec.compileBorderColor(props.border)}
+    ${props => Spec.compileBorderRadius(props.border)}
+    
+    ${props => Spec.compileZ(props.z)}
+    ${props => Spec.compilePosition(props.position)}
+    ${props => Spec.compileShadow(props.shadow)}
+    ${props => Spec.compileOpacity(props.opacity)}
+`;
+
+export {
+    StyledContainer as Container,
+    normalizeBackground
+};

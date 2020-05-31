@@ -7,20 +7,29 @@ exports["default"] = void 0;
 
 var _react = _interopRequireDefault(require("react"));
 
-var _Content = _interopRequireDefault(require("./Content"));
+var _primitiveUiSpec = require("@yosmy/primitive-ui-spec");
+
+var _Content = _interopRequireDefault(require("./Layout/Content"));
+
+var _jsxRuntime = require("react/jsx-runtime");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
-var BlankLayout = function BlankLayout(props) {
-  return _react["default"].createElement(_Content["default"], _extends({}, props, {
-    background: props.background,
-    align: props.align,
-    padding: props.padding,
-    grow: props.grow
-  }), props.children);
+var BlankLayout = function BlankLayout(_ref) {
+  var align = _ref.align,
+      padding = _ref.padding,
+      grow = _ref.grow,
+      scroll = _ref.scroll,
+      children = _ref.children;
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Content["default"], {
+    align: align,
+    padding: padding,
+    grow: grow,
+    scroll: scroll,
+    children: children
+  });
 };
 
+BlankLayout.propTypes = _primitiveUiSpec.BlankLayout.Props;
 var _default = BlankLayout;
 exports["default"] = _default;
